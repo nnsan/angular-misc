@@ -1,0 +1,11 @@
+:host ::ng-deep {
+  .register-form {
+    width: 100%;
+
+    .form-field {
+      width: 50%;
+      display: block;
+    }
+  }
+}
+

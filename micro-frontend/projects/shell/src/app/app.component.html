@@ -1,0 +1,15 @@
+<div class="app-container">
+  <main class="body-content">
+    <div class="navigation">
+      <mat-nav-list>
+        <mat-list-item *ngFor="let item of menuItems; last as last" [activated]="item.isActive" (click)="navMenuItem(item)">
+          <span>{{item.name}}</span>
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

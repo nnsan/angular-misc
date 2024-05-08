@@ -1,0 +1,26 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <mat-form-field class="form-field">
+    <mat-label>First Name</mat-label>
+    <input matInput placeholder="David" formControlName="firstName">
+    <mat-error *ngIf="registerForm.get('firstName')!.invalid">{{registerForm.get('firstName') | formControlErrorMsg: getError}}</mat-error>
+  </mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Last Name</mat-label>
+    <input matInput placeholder="Beckham" formControlName="lastName" [attr.disabled]="'disabled'">
+  </mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Email</mat-label>
+    <input matInput libDatatableCustomeAction [action]="emailAction" [form]="registerForm" [controlNames]="['email', 'donate']" placeholder="pat@example.com" formControlName="email">
+  </mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Donate</mat-label>
+    <input libNumberFormat [currencyRegex]="currencyPattern" matInput placeholder="$1,234.12" formControlName="donate">
+  </mat-form-field>
+  <div>
+    <p libDatatableCustomeAction [action]="gameRPT" [form]="registerForm" [controlNames]="['donate']">8</p>
+  </div>
+  <app-address-form [form]="registerForm.get('address')"></app-address-form>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">Submit</button>
+</form>
+
