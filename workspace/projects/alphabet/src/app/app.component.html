@@ -1,23 +1,25 @@
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container class="app-container">
   <mat-sidenav mode="side" opened>
     <mat-nav-list>
-      <mat-list-item>Bảng Chữ Cái Tiếng Việt</mat-list-item>
+      <a routerLink="/vietnamese-letter" routerLinkActive="active"><mat-list-item>Bảng Chữ Cái Tiếng Việt</mat-list-item></a>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>Âm và Vần</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-list-item>Bảng 1</mat-list-item>
-        <mat-list-item>Bảng 2</mat-list-item>
-        <mat-list-item>Bảng 3</mat-list-item>
-        <mat-list-item>Bảng 4</mat-list-item>
-        <mat-list-item>Bảng 5</mat-list-item>
-        <mat-list-item>Bảng 6</mat-list-item>
-        <mat-list-item>Bảng 7</mat-list-item>
-        <mat-list-item>Bảng 8</mat-list-item>
-        <mat-list-item>Bảng 9</mat-list-item>
-        <mat-list-item>Bảng 10</mat-list-item>
+        <a routerLink="/phonetics/1" routerLinkActive="active"><mat-list-item>Bảng 1</mat-list-item></a>
+        <a routerLink="/phonetics/2" routerLinkActive="active"><mat-list-item>Bảng 2</mat-list-item></a>
+        <a routerLink="/phonetics/3" routerLinkActive="active"><mat-list-item>Bảng 3</mat-list-item></a>
+        <a routerLink="/phonetics/4" routerLinkActive="active"><mat-list-item>Bảng 4</mat-list-item></a>
+        <a routerLink="/phonetics/5" routerLinkActive="active"><mat-list-item>Bảng 5</mat-list-item></a>
+        <a routerLink="/phonetics/6" routerLinkActive="active"><mat-list-item>Bảng 6</mat-list-item></a>
+        <a routerLink="/phonetics/7" routerLinkActive="active"><mat-list-item>Bảng 7</mat-list-item></a>
+        <a routerLink="/phonetics/8" routerLinkActive="active"><mat-list-item>Bảng 8</mat-list-item></a>
+        <a routerLink="/phonetics/9" routerLinkActive="active"><mat-list-item>Bảng 9</mat-list-item></a>
+        <a routerLink="/phonetics/10" routerLinkActive="active"><mat-list-item>Bảng 10</mat-list-item></a>
       </mat-expansion-panel>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>Main content</mat-sidenav-content>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
 </mat-sidenav-container>

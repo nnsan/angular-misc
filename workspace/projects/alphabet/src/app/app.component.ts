@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -9,6 +9,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   standalone: true,
   imports: [
     RouterOutlet,
+    RouterModule,
     MatSidenavModule,
     MatListModule,
     MatExpansionModule
