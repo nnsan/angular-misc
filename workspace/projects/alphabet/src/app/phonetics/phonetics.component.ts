@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LessonService } from '../services/lesson.service';
 
 @Component({
   selector: 'app-phonetics',
@@ -8,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './phonetics.component.scss'
 })
 export class PhoneticsComponent {
+
+  constructor(private lessonService: LessonService) {
+
+  }
 
 }

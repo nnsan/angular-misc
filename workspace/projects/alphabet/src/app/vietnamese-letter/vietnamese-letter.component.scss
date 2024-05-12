@@ -1,0 +1,16 @@
+.operation-wrapper {
+  display: flex;
+  justify-content: space-around;
+
+  .score {
+    display: flex;
+    align-items: center;
+    height: 150px;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}

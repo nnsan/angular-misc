@@ -1,1 +1,22 @@
-<p>vietnamese-letter works!</p>
+<div class="wrapper">
+  <div class="operation-wrapper">
+    <div class="score">
+      <app-score-table [score]="score" [question]="question" [total]="totalScore"></app-score-table>
+    </div>
+    <div class="actions">
+      <button mat-flat-button color="primary" (click)="onStart()">Bắt Đầu Học</button>
+      <button mat-stroked-button color="primary">Xem kết quả</button>
+    </div>
+    <div class="clock">
+      <app-countdown-timer [timeLimit]="thinkingTime" (timesUp)="onTimesUp()" [restartTimer]="resetTimer"></app-countdown-timer>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="lesson-container">
+    <span>{{message}}</span>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="need-to-improve-container">
+
+  </div>
+</div>
