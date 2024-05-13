@@ -7,8 +7,8 @@ import { CountdownTimerComponent } from '../countdown-timer/countdown-timer.comp
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { ScoreTableComponent } from '../score-table/score-table.component';
-import { LessonStatus, END_SIGNAL } from '../services/utility'
-import { takeUntil, throttleTime, tap } from 'rxjs/operators';
+import { END_SIGNAL, LessonStatus } from '../services/utility'
+import { takeUntil, tap, throttleTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-vietnamese-letter',
@@ -31,9 +31,9 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
   public question: number;
   public totalScore: number;
   public needMorePractice: string[];
-  public haveKnowledge: string[];
 
   public status: LessonStatus;
+  public LESSON_STATUS = LessonStatus;
 
   private destroy$: Subject<void> = new Subject<void>();
 
@@ -44,7 +44,6 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
     this.totalScore = 0;
     this.message = '';
     this.needMorePractice = [];
-    this.haveKnowledge = [];
     this.status = LessonStatus.ReadyToStart;
   }
 
@@ -72,6 +71,7 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
           this.status = LessonStatus.InProgress;
           this.message = value;
           this.needMorePractice.push(value);
+          this.question += 1;
         }
       }),
       throttleTime(4_000)
@@ -80,6 +80,20 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
         this.resetTimer.next(true);
       }
     });
+  }
+
+  onPause() {
+    this.status = LessonStatus.OnPause;
+    this.lessonService.pause();
+  }
+
+  onResume() {
+    this.status = LessonStatus.InProgress;
+    this.lessonService.resume();
+  }
+
+  onResult() {
+
   }
 
   ngOnDestroy(): void {

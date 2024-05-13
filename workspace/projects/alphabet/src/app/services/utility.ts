@@ -5,7 +5,8 @@ export function getRandomInt(max: number) {
 export enum LessonStatus {
   InProgress,
   EndLesson,
-  ReadyToStart
+  ReadyToStart,
+  OnPause
 }
 
 export const END_SIGNAL = 'End Of Lesson';

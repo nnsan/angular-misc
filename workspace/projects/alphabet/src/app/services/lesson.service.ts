@@ -7,6 +7,8 @@ interface ILessonService {
   notify: Observable<any>;
   start: () => void;
   stop: () => void;
+  pause: () => void;
+  resume: () => void;
   nextQuestion: () => void;
   setQuestionList: (list: ILessonQuestion[]) => void;
 }
@@ -24,6 +26,7 @@ export class LessonService implements ILessonService {
   private nextQuestionTrigger = new Subject<void>();
   private questionList: ILessonQuestion[] = [];
   private stopNotifier$ = new Subject<void>();
+  private isPaused: boolean;
 
   protected currentQuestion: ILessonQuestion | null;
   protected subject = new BehaviorSubject<string>('');
@@ -35,6 +38,7 @@ export class LessonService implements ILessonService {
   constructor() {
     this.notify = this.subject.asObservable();
     this.currentQuestion = null;
+    this.isPaused = false;
   }
 
   setQuestionList(questions: ILessonQuestion[]) {
@@ -49,6 +53,7 @@ export class LessonService implements ILessonService {
     this.stopNotifier$.next();
     this.remainItems = [...this.questionList];
     this.currentQuestion = null;
+    this.isPaused = false;
 
     this.nextQuestionTrigger.pipe(takeUntil(this.stopNotifier$)).subscribe(async _ => {
       await this.buildQuestion();
@@ -60,11 +65,24 @@ export class LessonService implements ILessonService {
     this.stopNotifier$.next();
   }
 
+  pause() {
+    this.isPaused = true;
+  }
+
+  resume() {
+    this.isPaused = false;
+    this.nextQuestion();
+  }
+
   nextQuestion() {
     this.nextQuestionTrigger.next();
   }
 
   private async buildQuestion() {
+    if (this.isPaused) {
+      return;
+    }
+
     if (this.currentQuestion) {
       await this.readAnswer(this.currentQuestion);
 

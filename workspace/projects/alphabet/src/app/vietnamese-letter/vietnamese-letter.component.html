@@ -4,8 +4,17 @@
       <app-score-table [score]="score" [question]="question" [total]="totalScore"></app-score-table>
     </div>
     <div class="actions">
-      <button mat-flat-button color="primary" (click)="onStart()">Bắt Đầu Học</button>
-      <button mat-stroked-button color="primary">Xem kết quả</button>
+      @if (status == LESSON_STATUS.ReadyToStart) {
+        <button mat-flat-button color="primary" (click)="onStart()">Bắt Đầu Học</button>
+      } @else if (status == LESSON_STATUS.InProgress) {
+        <button mat-stroked-button color="warn" (click)="onPause()">Tạm Dừng</button>
+      } @else if (status == LESSON_STATUS.OnPause) {
+        <button mat-flat-button color="primary" (click)="onResume()">Tiếp Tục</button>
+      }
+
+      @if (status == LESSON_STATUS.EndLesson || status == LESSON_STATUS.OnPause) {
+        <button mat-stroked-button color="primary" (click)="onResult()">Xem kết quả</button>
+      }
     </div>
     <div class="clock">
       <app-countdown-timer [timeLimit]="thinkingTime" (timesUp)="onTimesUp()" [restartTimer]="resetTimer"></app-countdown-timer>
