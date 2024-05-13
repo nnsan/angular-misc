@@ -30,7 +30,7 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
   public score: number;
   public question: number;
   public totalScore: number;
-  public needMorePractice: string[];
+  public needMorePractice: Set<string>;
 
   public status: LessonStatus;
   public LESSON_STATUS = LessonStatus;
@@ -43,7 +43,7 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
     this.question = 0;
     this.totalScore = 0;
     this.message = '';
-    this.needMorePractice = [];
+    this.needMorePractice = new Set();
     this.status = LessonStatus.ReadyToStart;
   }
 
@@ -70,7 +70,7 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
         } else {
           this.status = LessonStatus.InProgress;
           this.message = value;
-          this.needMorePractice.push(value);
+          this.needMorePractice.add(value);
           this.question += 1;
         }
       }),
@@ -94,6 +94,13 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
 
   onResult() {
 
+  }
+
+  getScore() {
+    if (this.needMorePractice.has(this.message)) {
+      this.needMorePractice.delete(this.message);
+      this.score += 1;
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="operation-wrapper">
-    <div class="score">
+    <div class="score" (click)="getScore()">
       <app-score-table [score]="score" [question]="question" [total]="totalScore"></app-score-table>
     </div>
     <div class="actions">
