@@ -1,9 +1,32 @@
-<div class="wrapper">
+<div class="wrapper" (click)="getScore()">
   <div class="operation-wrapper">
-    <div class="score"></div>
-    <div class="clock"></div>
+    <div class="score">
+      <app-score-table [score]="score" [question]="question" [total]="totalScore"></app-score-table>
+    </div>
+    <div class="actions">
+      @if (status == LESSON_STATUS.ReadyToStart) {
+      <button mat-flat-button color="primary" (click)="onStart($event)">Bắt Đầu Học</button>
+      } @else if (status == LESSON_STATUS.InProgress) {
+      <button mat-flat-button color="warn" (click)="onPause($event)">Tạm Dừng</button>
+      } @else if (status == LESSON_STATUS.OnPause) {
+      <button mat-flat-button color="primary" (click)="onResume($event)">Tiếp Tục</button>
+      }
+    </div>
+    <div class="clock">
+      <app-countdown-timer [timeLimit]="thinkingTime" (timesUp)="onTimesUp()" [restartTimer]="resetTimer"></app-countdown-timer>
+    </div>
   </div>
-  <div class="message-container">
+  <mat-divider></mat-divider>
+  <div class="lesson-container">
+    <p [innerHTML]="message | safeHtml"></p>
+  </div>
+  <mat-divider></mat-divider>
 
+  @if (status == LESSON_STATUS.EndLesson && needMorePractice.size > 0) {
+  <div class="need-to-improve-container">
+  @for (letter of needMorePractice; track letter) {
+  <span [innerHTML]="letter | safeHtml"></span>
+  }
   </div>
+  }
 </div>
