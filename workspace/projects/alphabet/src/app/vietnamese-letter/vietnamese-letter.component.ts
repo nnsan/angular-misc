@@ -30,7 +30,6 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
   public resetTimer = new Subject<boolean>();
 
   public message: string;
-  public displayMessage: string;
   public score: number;
   public question: number;
   public totalScore: number;
@@ -47,7 +46,6 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
     this.question = 0;
     this.totalScore = 0;
     this.message = '';
-    this.displayMessage = '';
     this.needMorePractice = new Set();
     this.status = LessonStatus.ReadyToStart;
   }
@@ -71,14 +69,12 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
     this.lessonService.notify.pipe(
       takeUntil(this.destroy$),
       tap((value: ILessonEmit) => {
-        if (value.lesson === END_SIGNAL) {
+        if (value.unit === END_SIGNAL) {
           this.message = '';
-          this.displayMessage = '';
           this.status = LessonStatus.EndLesson;
         } else {
           this.status = LessonStatus.InProgress;
-          this.displayMessage = value.format || '';
-          this.message = value.lesson;
+          this.message = value.format || '';
           this.needMorePractice.add(this.message);
           this.question += 1;
         }
@@ -92,15 +88,15 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
   }
 
   onPause(event: MouseEvent) {
-    event.stopPropagation();
     this.status = LessonStatus.OnPause;
     this.lessonService.pause();
+    event.stopPropagation();
   }
 
   onResume(event: MouseEvent) {
-    event.stopPropagation();
     this.status = LessonStatus.InProgress;
     this.lessonService.resume();
+    event.stopPropagation();
   }
 
   getScore() {

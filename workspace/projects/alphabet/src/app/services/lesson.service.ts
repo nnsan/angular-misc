@@ -13,7 +13,7 @@ interface ILessonService {
 }
 
 export interface ILessonEmit {
-  lesson: string;
+  unit: string;
   format?: string;
 }
 
@@ -30,7 +30,7 @@ export abstract class LessonService implements ILessonService {
   private isPaused: boolean;
 
   public currentQuestion: ILessonQuestion | null;
-  public subject = new BehaviorSubject<ILessonEmit>({lesson: ''});
+  public subject = new BehaviorSubject<ILessonEmit>({unit: ''});
   public remainItems: ILessonQuestion[] = [];
   public notify: Observable<ILessonEmit>;
 
@@ -126,12 +126,12 @@ export abstract class LessonService implements ILessonService {
   }
 
   private sendEndSignal() {
-    this.subject.next({lesson: END_SIGNAL});
+    this.subject.next({unit: END_SIGNAL});
   }
 
   private async generateQuestion() {
     this.currentQuestion = this.getLetter();
-    this.subject.next({lesson: this.currentQuestion.lessonUnit, format: this.questionDisplayFormat(this.currentQuestion.lessonUnit)});
+    this.subject.next({unit: this.currentQuestion.lessonUnit, format: this.questionDisplayFormat(this.currentQuestion.lessonUnit)});
     await this.readQuestion();
   }
 

@@ -18,15 +18,15 @@
   </div>
   <mat-divider></mat-divider>
   <div class="lesson-container">
-    <p [innerHTML]="displayMessage | safeHtml"></p>
+    <p [innerHTML]="message | safeHtml"></p>
   </div>
   <mat-divider></mat-divider>
-  <div class="need-to-improve-container">
-  @if (status == LESSON_STATUS.EndLesson && needMorePractice.size > 0) {
-      @for (letter of needMorePractice; track letter) {
-        <span>{{letter}}</span>
-      }
-  }
-  </div>
 
+  @if (status == LESSON_STATUS.EndLesson && needMorePractice.size > 0) {
+    <div class="need-to-improve-container">
+    @for (letter of needMorePractice; track letter) {
+      <span [innerHTML]="letter | safeHtml"></span>
+    }
+    </div>
+  }
 </div>
