@@ -1,19 +1,15 @@
-<div class="wrapper">
+<div class="wrapper" (click)="getScore()">
   <div class="operation-wrapper">
-    <div class="score" (click)="getScore()">
+    <div class="score">
       <app-score-table [score]="score" [question]="question" [total]="totalScore"></app-score-table>
     </div>
     <div class="actions">
       @if (status == LESSON_STATUS.ReadyToStart) {
-        <button mat-flat-button color="primary" (click)="onStart()">Bắt Đầu Học</button>
+        <button mat-flat-button color="primary" (click)="onStart($event)">Bắt Đầu Học</button>
       } @else if (status == LESSON_STATUS.InProgress) {
-        <button mat-stroked-button color="warn" (click)="onPause()">Tạm Dừng</button>
+        <button mat-flat-button color="warn" (click)="onPause($event)">Tạm Dừng</button>
       } @else if (status == LESSON_STATUS.OnPause) {
-        <button mat-flat-button color="primary" (click)="onResume()">Tiếp Tục</button>
-      }
-
-      @if (status == LESSON_STATUS.EndLesson || status == LESSON_STATUS.OnPause) {
-        <button mat-stroked-button color="primary" (click)="onResult()">Xem kết quả</button>
+        <button mat-flat-button color="primary" (click)="onResume($event)">Tiếp Tục</button>
       }
     </div>
     <div class="clock">
@@ -22,10 +18,15 @@
   </div>
   <mat-divider></mat-divider>
   <div class="lesson-container">
-    <span>{{message}}</span>
+    <p [innerHTML]="displayMessage | safeHtml"></p>
   </div>
   <mat-divider></mat-divider>
   <div class="need-to-improve-container">
-
+  @if (status == LESSON_STATUS.EndLesson && needMorePractice.size > 0) {
+      @for (letter of needMorePractice; track letter) {
+        <span>{{letter}}</span>
+      }
+  }
   </div>
+
 </div>

@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { getRandomInt, END_SIGNAL } from './utility';
 import { takeUntil } from 'rxjs/operators';
@@ -13,27 +12,29 @@ interface ILessonService {
   setQuestionList: (list: ILessonQuestion[]) => void;
 }
 
+export interface ILessonEmit {
+  lesson: string;
+  format?: string;
+}
+
 export interface ILessonQuestion {
   answer: string;
   lessonUnit: string;
   question: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class LessonService implements ILessonService {
+export abstract class LessonService implements ILessonService {
   private nextQuestionTrigger = new Subject<void>();
   private questionList: ILessonQuestion[] = [];
   private stopNotifier$ = new Subject<void>();
   private isPaused: boolean;
 
-  protected currentQuestion: ILessonQuestion | null;
-  protected subject = new BehaviorSubject<string>('');
-  protected remainItems: ILessonQuestion[] = [];
+  public currentQuestion: ILessonQuestion | null;
+  public subject = new BehaviorSubject<ILessonEmit>({lesson: ''});
+  public remainItems: ILessonQuestion[] = [];
+  public notify: Observable<ILessonEmit>;
 
-  public notify: Observable<string>;
-  public assetsDir = './assets/vietnamese-letter/';
+  protected assetsDir = '';
 
   constructor() {
     this.notify = this.subject.asObservable();
@@ -41,12 +42,12 @@ export class LessonService implements ILessonService {
     this.isPaused = false;
   }
 
-  setQuestionList(questions: ILessonQuestion[]) {
-    this.questionList = questions
-  }
-
   protected questionDisplayFormat(lesson) {
     return lesson;
+  }
+
+  setQuestionList(questions: ILessonQuestion[]) {
+    this.questionList = questions
   }
 
   start() {
@@ -125,12 +126,12 @@ export class LessonService implements ILessonService {
   }
 
   private sendEndSignal() {
-    this.subject.next(END_SIGNAL);
+    this.subject.next({lesson: END_SIGNAL});
   }
 
   private async generateQuestion() {
     this.currentQuestion = this.getLetter();
-    this.subject.next(this.questionDisplayFormat(this.currentQuestion.lessonUnit));
+    this.subject.next({lesson: this.currentQuestion.lessonUnit, format: this.questionDisplayFormat(this.currentQuestion.lessonUnit)});
     await this.readQuestion();
   }
 

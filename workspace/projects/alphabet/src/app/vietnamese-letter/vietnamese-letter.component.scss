@@ -32,7 +32,18 @@
   align-items: center;
   justify-content: center;
 
-  span {
+  p {
     font-size: 100px;
+  }
+}
+
+.need-to-improve-container {
+  margin: 20px auto;
+
+  span {
+    display: inline-block;
+    line-height: 150%;
+    font-size: 50px;
+    margin: 0 10px
   }
 }
