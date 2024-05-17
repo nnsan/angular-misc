@@ -1,0 +1,42 @@
+.clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.clock-face {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1;
+}
+
+.hour-hand {
+  stroke: #333;
+  stroke-width: 2;
+}
+
+.minute-hand {
+  stroke: #333;
+  stroke-width: 1.5;
+}
+
+.second-hand {
+  stroke: red;
+  stroke-width: 1;
+}
+
+.clock-tick {
+  stroke: #333;
+  stroke-width: 0.5;
+}
+
+.highlighted-tick {
+  stroke: #000000; /* Highlight color */
+  stroke-width: 1.5; /* Slightly thicker */
+}
+
+.clock-number {
+  font-size: 6px;
+  fill: #333;
+}

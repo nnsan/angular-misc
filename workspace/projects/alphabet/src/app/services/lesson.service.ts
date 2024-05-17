@@ -99,7 +99,7 @@ export abstract class LessonService implements ILessonService {
     }
   }
 
-  private readAnswer(item: ILessonQuestion): Promise<void> {
+  protected readAnswer(item: ILessonQuestion): Promise<void> {
     return new Promise<void>((resolve) => {
       const answer = new Audio(`${this.assetsDir}${item.answer}`);
       answer.play().catch(err => {
@@ -112,7 +112,7 @@ export abstract class LessonService implements ILessonService {
     });
   }
 
-  private readQuestion(): Promise<void> {
+  protected readQuestion(): Promise<void> {
     return new Promise<void>((resolve) => {
       const question = new Audio(`${this.assetsDir}${this.currentQuestion?.question}`);
       question.play().catch(err => {

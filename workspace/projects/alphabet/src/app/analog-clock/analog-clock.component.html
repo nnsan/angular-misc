@@ -1,0 +1,40 @@
+<div class="clock">
+  <svg width="200" height="200" viewBox="0 0 100 100">
+    <!-- Clock face -->
+    <circle [attr.cx]="cx" [attr.cy]="cy" [attr.r]="circleRadius" class="clock-face"></circle>
+
+    <!-- Ticks -->
+    @for(tick of ticks; track tick.x1; let i = $index) {
+    <line
+      [attr.x1]="tick.x1"
+      [attr.y1]="tick.y1"
+      [attr.x2]="tick.x2"
+      [attr.y2]="tick.y2"
+      [ngClass]="{'clock-tick': true, 'highlighted-tick': i % 5 == 0}"
+      class="clock-tick">
+    </line>
+    }
+
+    @for(number of numbers; track number.value) {
+    <text
+      [attr.x]="number.x"
+      [attr.y]="number.y"
+      class="clock-number"
+      text-anchor="middle"
+      dominant-baseline="middle">
+    {{ number.value }}
+    </text>
+    }
+
+    <!-- Hour hand -->
+    <line [attr.transform]="hourHandTransform" [attr.x1]="cx" [attr.y1]="cy" [attr.x2]="cx" [attr.y2]="cy/2" class="hour-hand"></line>
+
+    <!-- Minute hand -->
+    <line [attr.transform]="minuteHandTransform" [attr.x1]="cx" [attr.y1]="cy" [attr.x2]="cx" [attr.y2]="cy/3" class="minute-hand"></line>
+
+    <!-- Second hand -->
+    <line [attr.transform]="secondHandTransform" [attr.x1]="cx" [attr.y1]="cy" [attr.x2]="cx" [attr.y2]="cy/4" class="second-hand"></line>
+
+    <circle [attr.cx]="cx" [attr.cy]="cy" r="2" class="center-point"></circle>
+  </svg>
+</div>

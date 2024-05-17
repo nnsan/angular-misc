@@ -1,0 +1,49 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.operation-wrapper {
+  display: flex;
+
+  .score, .clock {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .score {
+    display: flex;
+    align-items: center;
+    height: 150px;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}
+
+.lesson-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    font-size: 100px;
+  }
+}
+
+.need-to-improve-container {
+  margin: 20px auto;
+
+  span {
+    display: inline-block;
+    line-height: 150%;
+    font-size: 50px;
+    margin: 0 10px
+  }
+}
