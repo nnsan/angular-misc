@@ -40,6 +40,9 @@ export abstract class LessonService implements ILessonService {
     this.notify = this.subject.asObservable();
     this.currentQuestion = null;
     this.isPaused = false;
+    this.nextQuestionTrigger.pipe(takeUntil(this.stopNotifier$)).subscribe(async _ => {
+      await this.buildQuestion();
+    });
   }
 
   protected questionDisplayFormat(lesson) {
@@ -51,14 +54,10 @@ export abstract class LessonService implements ILessonService {
   }
 
   start() {
-    this.stopNotifier$.next();
     this.remainItems = [...this.questionList];
     this.currentQuestion = null;
     this.isPaused = false;
 
-    this.nextQuestionTrigger.pipe(takeUntil(this.stopNotifier$)).subscribe(async _ => {
-      await this.buildQuestion();
-    });
     this.nextQuestion();
   }
 
@@ -91,8 +90,6 @@ export abstract class LessonService implements ILessonService {
         this.generateQuestion();
       } else {
         this.sendEndSignal();
-
-        this.stopNotifier$.next();
       }
     } else {
       this.generateQuestion();
@@ -112,7 +109,7 @@ export abstract class LessonService implements ILessonService {
     });
   }
 
-  protected readQuestion(): Promise<void> {
+  public readQuestion(): Promise<void> {
     return new Promise<void>((resolve) => {
       const question = new Audio(`${this.assetsDir}${this.currentQuestion?.question}`);
       question.play().catch(err => {
@@ -132,7 +129,6 @@ export abstract class LessonService implements ILessonService {
   private async generateQuestion() {
     this.currentQuestion = this.getLetter();
     this.subject.next({unit: this.currentQuestion.lessonUnit, format: this.questionDisplayFormat(this.currentQuestion.lessonUnit)});
-    await this.readQuestion();
   }
 
   private getLetter() {

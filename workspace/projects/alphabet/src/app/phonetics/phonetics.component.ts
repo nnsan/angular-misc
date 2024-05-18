@@ -43,7 +43,7 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
   private section!: string;
 
   constructor(private lessonService: PhonticsService, private activatedRoute: ActivatedRoute) {
-    this.thinkingTime = 4;
+    this.thinkingTime = 3;
     this.score = 0;
     this.question = 0;
     this.totalScore = 0;
@@ -85,12 +85,21 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
           this.question += 1;
         }
       }),
-      throttleTime(4_000)
-    ).subscribe(_ => {
+    ).subscribe(async _ => {
       if (this.message) {
+        await this.lessonService.readQuestion();
         this.resetTimer.next(true);
       }
     });
+  }
+
+  OnContinue(event: MouseEvent) {
+    event.stopPropagation();
+    this.score = 0;
+    this.question = 0;
+    this.needMorePractice.clear();
+
+    this.lessonService.start();
   }
 
   onPause(event: MouseEvent) {

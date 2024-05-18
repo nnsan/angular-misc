@@ -10,6 +10,8 @@
         <button mat-flat-button color="warn" (click)="onPause($event)">Tạm Dừng</button>
       } @else if (status == LESSON_STATUS.OnPause) {
         <button mat-flat-button color="primary" (click)="onResume($event)">Tiếp Tục</button>
+      } @else if (status == LESSON_STATUS.EndLesson) {
+      <button mat-flat-button color="primary" (click)="OnContinue($event)">Bắt Đầu Học</button>
       }
     </div>
     <div class="clock">

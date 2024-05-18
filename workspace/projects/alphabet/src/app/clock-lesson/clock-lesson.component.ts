@@ -4,11 +4,11 @@ import { ScoreTableComponent } from '../score-table/score-table.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { END_SIGNAL, LessonStatus } from '../services/utility';
-import { VIETNAMESE_LETTER_QUESTIONS } from '../vietnamese-letter/question';
-import { takeUntil, tap, throttleTime } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ILessonEmit } from '../services/lesson.service';
 import { ClockLessonService } from './clock-lesson.service'
+import { AnalogClockComponent } from '../analog-clock/analog-clock.component';
 
 @Component({
   selector: 'app-clock-lesson',
@@ -17,7 +17,8 @@ import { ClockLessonService } from './clock-lesson.service'
     CountdownTimerComponent,
     ScoreTableComponent,
     MatButtonModule,
-    MatDividerModule
+    MatDividerModule,
+    AnalogClockComponent
   ],
   templateUrl: './clock-lesson.component.html',
   styleUrl: './clock-lesson.component.scss'
@@ -35,6 +36,9 @@ export class ClockLessonComponent implements OnInit, OnDestroy {
   public status: LessonStatus;
   public LESSON_STATUS = LessonStatus;
 
+  public hours: number;
+  public minutes: number;
+
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(private lessonService: ClockLessonService) {
@@ -43,13 +47,14 @@ export class ClockLessonComponent implements OnInit, OnDestroy {
     this.question = 0;
     this.totalScore = 0;
     this.message = '';
+    this.hours = 0;
+    this.minutes = 0;
     this.needMorePractice = new Set();
     this.status = LessonStatus.ReadyToStart;
   }
 
   ngOnInit(): void {
-    this.lessonService.setQuestionList(VIETNAMESE_LETTER_QUESTIONS);
-    this.totalScore = VIETNAMESE_LETTER_QUESTIONS.length;
+    this.totalScore = 10;
   }
 
   onTimesUp() {
@@ -61,6 +66,7 @@ export class ClockLessonComponent implements OnInit, OnDestroy {
     this.score = 0;
     this.question = 0;
     this.needMorePractice.clear();
+    this.lessonService.setQuestionList(this.lessonService.generateQuestionList(this.totalScore));
     this.lessonService.start();
 
     this.lessonService.notify.pipe(
@@ -72,16 +78,29 @@ export class ClockLessonComponent implements OnInit, OnDestroy {
         } else {
           this.status = LessonStatus.InProgress;
           this.message = value.unit;
+          const time = this.lessonService.parseMessage(this.message);
+          this.hours = time.hours;
+          this.minutes = time.minutes;
           this.needMorePractice.add(this.message);
           this.question += 1;
         }
       }),
-      throttleTime(4_000)
-    ).subscribe(_ => {
+    ).subscribe(async _ => {
       if (this.message) {
+        await this.lessonService.readQuestion();
         this.resetTimer.next(true);
       }
     });
+  }
+
+  OnContinue(event: MouseEvent) {
+    event.stopPropagation();
+    this.lessonService.setQuestionList(this.lessonService.generateQuestionList(this.totalScore));
+    this.score = 0;
+    this.question = 0;
+    this.needMorePractice.clear();
+
+    this.lessonService.start();
   }
 
   onPause(event: MouseEvent) {
@@ -105,5 +124,6 @@ export class ClockLessonComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next();
+    this.lessonService.stop();
   }
 }

@@ -29,8 +29,9 @@
 .lesson-container {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  margin-top: 15vh;
 
   p {
     font-size: 100px;

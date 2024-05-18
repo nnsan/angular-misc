@@ -41,7 +41,7 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(private lessonService: VietnameseLetterService) {
-    this.thinkingTime = 3;
+    this.thinkingTime = 2;
     this.score = 0;
     this.question = 0;
     this.totalScore = 0;
@@ -79,12 +79,22 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
           this.question += 1;
         }
       }),
-      throttleTime(4_000)
-    ).subscribe(_ => {
+    ).subscribe(async _ => {
       if (this.message) {
+        await this.lessonService.readQuestion();
         this.resetTimer.next(true);
       }
     });
+  }
+
+  OnContinue(event: MouseEvent) {
+    event.stopPropagation();
+    this.score = 0;
+    this.question = 0;
+    this.needMorePractice.clear();
+
+    this.lessonService.start();
+    console.log('OnContinue');
   }
 
   onPause(event: MouseEvent) {
