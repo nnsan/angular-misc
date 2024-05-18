@@ -13,14 +13,32 @@
       } @else if (status == LESSON_STATUS.EndLesson) {
       <button mat-flat-button color="primary" (click)="OnContinue($event)">Bắt Đầu Học</button>
       }
+
+      @if (status == LESSON_STATUS.ReadyToStart || status == LESSON_STATUS.EndLesson) {
+      <button mat-flat-button color="primary" (click)="OnSimulate($event)">Mô Phỏng</button>
+      } @else if (status == LESSON_STATUS.InSimulate) {
+      <button mat-flat-button color="warn" (click)="OnStopSimulate($event)">Ngưng Mô Phỏng</button>
+      }
     </div>
     <div class="clock">
       <app-countdown-timer [timeLimit]="thinkingTime" (timesUp)="onTimesUp()" [restartTimer]="resetTimer"></app-countdown-timer>
+      <mat-form-field>
+        <mat-label>Thời gian suy nghĩ:</mat-label>
+        <mat-select [(value)]="thinkingTime" [disabled]="status !== LESSON_STATUS.ReadyToStart && status !== LESSON_STATUS.EndLesson">
+          @for (period of thinkTimeOptions; track period) {
+          <mat-option [value]="period">{{period}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
     </div>
   </div>
   <mat-divider></mat-divider>
   <div class="lesson-container">
-    <app-analog-clock [hours]="hours" [minutes]="minutes"></app-analog-clock>
+    <app-analog-clock [hours]="hours" [minutes]="minutes" [seconds]="seconds"></app-analog-clock>
+    @if (isShowMessage) {
+    <p class="result">{{message}}</p>
+    }
   </div>
   <mat-divider></mat-divider>
 

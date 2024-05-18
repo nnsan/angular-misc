@@ -6,7 +6,8 @@ export enum LessonStatus {
   InProgress,
   EndLesson,
   ReadyToStart,
-  OnPause
+  OnPause,
+  InSimulate
 }
 
 export const END_SIGNAL = 'End Of Lesson';

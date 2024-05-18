@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ILessonQuestion, LessonService } from '../services/lesson.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClockLessonService extends LessonService {
   override assetsDir = './assets/clock';
+  simulationInterval: number | undefined = undefined;
 
   override readAnswer(item: ILessonQuestion): Promise<void> {
     return new Promise<void>((resolve) => {
@@ -56,5 +58,45 @@ export class ClockLessonService extends LessonService {
       hours: parseInt(hours),
       minutes: parseInt(minutes)
     }
+  }
+
+  stopSimulation() {
+    if (this.simulationInterval) {
+      clearInterval(this.simulationInterval);
+    }
+  }
+
+  startHourSimulation(subject: Subject<any>) {
+    this.stopSimulation();
+    let simulatedHours = 0;
+    let simulatedMinutes = 0;
+    let simulatedSeconds = 0;
+
+    this.simulationInterval = setInterval(() => {
+      simulatedSeconds++;
+      if (simulatedSeconds === 60) {
+        simulatedSeconds = 0;
+        simulatedMinutes++;
+      }
+      if (simulatedMinutes === 60) {
+        simulatedMinutes = 0;
+        simulatedHours++;
+      }
+
+      if (simulatedHours === 12) {
+        simulatedHours = 0; // Reset after 12 hours
+      }
+
+      subject.next({
+        hours: simulatedHours,
+        minutes: simulatedMinutes,
+        seconds: simulatedSeconds
+      });
+
+      // Stop the simulation after one hour (60 minutes) if desired
+      if (simulatedMinutes >= 60) {
+        this.stopSimulation();
+      }
+    }, 1000 / 100); // Adjust interval time as needed for simulation speed
   }
 }
