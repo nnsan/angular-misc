@@ -1,6 +1,6 @@
 import { ILessonQuestion } from '../services/lesson.service';
 
-export const VIETNAMESE_LETTER_QUESTIONS: ILessonQuestion[] = [
+export const VIETNAMESE_QUESTIONS: ILessonQuestion[] = [
   {answer: 'a.m4a', lessonUnit: 'A-a', question: 'what-is-alphabet.m4a'},
   {answer: 'aw.m4a', lessonUnit: 'Ă-ă', question: 'what-is-alphabet.m4a'},
   {answer: 'aa.m4a', lessonUnit: 'Â-â', question: 'what-is-alphabet.m4a'},
@@ -35,4 +35,8 @@ export const VIETNAMESE_LETTER_QUESTIONS: ILessonQuestion[] = [
   {answer: 'hoi.m4a', lessonUnit: '?-Bổ', question: 'what-is-character.m4a'},
   {answer: 'nga.m4a', lessonUnit: '~-Bão', question: 'what-is-character.m4a'},
   {answer: 'nan.m4a', lessonUnit: '.-Dạ', question: 'what-is-character.m4a'},
+];
+
+export const ENGLISH_QUESTIONS: ILessonQuestion[] = [
+  {answer: 'a.m4a', lessonUnit: 'A-a', question: 'what-is-alphabet.m4a'},
 ];

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { VietnameseLetterComponent } from './vietnamese-letter/vietnamese-letter.component';
+import { AlphabetComponent } from './alphabet/alphabet.component';
 import { PhoneticsComponent } from './phonetics/phonetics.component';
 import { ClockLessonComponent } from './clock-lesson/clock-lesson.component';
 
@@ -7,11 +7,11 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'vietnamese-letter'
+    redirectTo: 'alphabet/vietnam'
   },
   {
-    path: 'vietnamese-letter',
-    component: VietnameseLetterComponent
+    path: 'alphabet/:language',
+    component: AlphabetComponent
   },
   {
     path: 'phonetics/:section',

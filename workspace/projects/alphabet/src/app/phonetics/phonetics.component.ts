@@ -4,11 +4,11 @@ import { CountdownTimerComponent } from '../countdown-timer/countdown-timer.comp
 import { ScoreTableComponent } from '../score-table/score-table.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { SafeHtmlPipe } from '../vietnamese-letter/safe-html.pipe';
+import { SafeHtmlPipe } from '../alphabet/safe-html.pipe';
 import { END_SIGNAL, LessonStatus } from '../services/utility';
 import { PHONETICS_QUESTIONS } from './question';
-import { takeUntil, tap, throttleTime } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
 import { ILessonEmit } from '../services/lesson.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -40,7 +40,7 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
   public status: LessonStatus;
   public LESSON_STATUS = LessonStatus;
 
-  private destroy$: Subject<void> = new Subject<void>();
+  private lessonNotifySubscription!: Subscription;
   private section!: string;
 
   constructor(private lessonService: PhonticsService, private activatedRoute: ActivatedRoute) {
@@ -56,10 +56,19 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
+      if (this.lessonNotifySubscription) {
+        this.lessonNotifySubscription.unsubscribe();
+      }
       this.section = params['section'];
       const questions = PHONETICS_QUESTIONS.get(this.section!);
       this.lessonService.setQuestionList(questions!);
+      this.lessonService.stop();
       this.totalScore = questions!.length;
+      this.question = 0;
+      this.message = '';
+      this.imagePath = '';
+      this.status = LessonStatus.ReadyToStart;
+      this.resetTimer.next(false);
     });
   }
 
@@ -74,8 +83,7 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
     this.needMorePractice.clear();
     this.lessonService.start();
 
-    this.lessonService.notify.pipe(
-      takeUntil(this.destroy$),
+    this.lessonNotifySubscription = this.lessonService.notify.pipe(
       tap((value: ILessonEmit) => {
         if (value.unit === END_SIGNAL) {
           this.message = '';
@@ -126,7 +134,9 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    if (this.lessonNotifySubscription) {
+      this.lessonNotifySubscription.unsubscribe();
+    }
   }
 
 }

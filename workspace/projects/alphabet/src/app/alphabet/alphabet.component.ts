@@ -1,16 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
-import { VietnameseLetterService } from './vietnamese-letter.service';
-import { VIETNAMESE_LETTER_QUESTIONS } from './question';
+import { AlphabetService } from './alphabet.service';
+import { ENGLISH_QUESTIONS, VIETNAMESE_QUESTIONS } from './question';
 import { CountdownTimerComponent } from '../countdown-timer/countdown-timer.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { ScoreTableComponent } from '../score-table/score-table.component';
 import { END_SIGNAL, LessonStatus } from '../services/utility'
-import { takeUntil, tap, throttleTime } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { ILessonEmit } from '../services/lesson.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-vietnamese-letter',
@@ -22,10 +23,10 @@ import { ILessonEmit } from '../services/lesson.service';
     MatDividerModule,
     SafeHtmlPipe
   ],
-  templateUrl: './vietnamese-letter.component.html',
-  styleUrl: './vietnamese-letter.component.scss'
+  templateUrl: './alphabet.component.html',
+  styleUrl: './alphabet.component.scss'
 })
-export class VietnameseLetterComponent implements OnInit, OnDestroy {
+export class AlphabetComponent implements OnInit, OnDestroy {
   public thinkingTime: number;
   public resetTimer = new Subject<boolean>();
 
@@ -37,10 +38,12 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
 
   public status: LessonStatus;
   public LESSON_STATUS = LessonStatus;
+  public language: string;
 
   private destroy$: Subject<void> = new Subject<void>();
+  private lessonNotifySubscription!: Subscription;
 
-  constructor(private lessonService: VietnameseLetterService) {
+  constructor(private lessonService: AlphabetService, private activatedRoute: ActivatedRoute) {
     this.thinkingTime = 2;
     this.score = 0;
     this.question = 0;
@@ -48,11 +51,31 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
     this.message = '';
     this.needMorePractice = new Set();
     this.status = LessonStatus.ReadyToStart;
+    this.language = '';
   }
 
   ngOnInit(): void {
-    this.lessonService.setQuestionList(VIETNAMESE_LETTER_QUESTIONS);
-    this.totalScore = VIETNAMESE_LETTER_QUESTIONS.length;
+    this.activatedRoute.params.subscribe((params) => {
+      this.language = params['language'];
+
+      if (this.lessonNotifySubscription) {
+        this.lessonNotifySubscription.unsubscribe();
+      }
+
+      if (this.language === 'vietnam') {
+        this.lessonService.setQuestionList(VIETNAMESE_QUESTIONS);
+        this.totalScore = VIETNAMESE_QUESTIONS.length;
+      } else if (this.language === 'english') {
+        this.lessonService.setQuestionList(ENGLISH_QUESTIONS);
+        this.totalScore = ENGLISH_QUESTIONS.length;
+      }
+
+      this.lessonService.setAssetDir(this.language);
+      this.lessonService.stop();
+      this.status = LessonStatus.ReadyToStart;
+      this.message = '';
+      this.question = 0;
+    });
   }
 
   onTimesUp() {
@@ -66,8 +89,7 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
     this.needMorePractice.clear();
     this.lessonService.start();
 
-    this.lessonService.notify.pipe(
-      takeUntil(this.destroy$),
+    this.lessonNotifySubscription = this.lessonService.notify.pipe(
       tap((value: ILessonEmit) => {
         if (value.unit === END_SIGNAL) {
           this.message = '';
@@ -117,6 +139,8 @@ export class VietnameseLetterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    if (this.lessonNotifySubscription) {
+      this.lessonNotifySubscription.unsubscribe();
+    }
   }
 }

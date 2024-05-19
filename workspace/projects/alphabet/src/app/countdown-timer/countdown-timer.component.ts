@@ -58,6 +58,9 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
           this.timePassed = 0;
           this.remainingPathColor = COLOR_CODES.info.color;
           this.startTimer();
+        } else {
+          clearInterval(this.timerInterval);
+          this.timePassed = 0;
         }
       });
     }

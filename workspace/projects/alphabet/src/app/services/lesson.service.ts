@@ -1,6 +1,5 @@
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject, Subscription } from 'rxjs';
 import { getRandomInt, END_SIGNAL } from './utility';
-import { takeUntil } from 'rxjs/operators';
 
 interface ILessonService {
   notify: Observable<any>;
@@ -28,8 +27,8 @@ export interface ILessonQuestion {
 export abstract class LessonService implements ILessonService {
   private nextQuestionTrigger = new Subject<void>();
   private questionList: ILessonQuestion[] = [];
-  private stopNotifier$ = new Subject<void>();
   private isPaused: boolean;
+  private nextQuestionSubscription!: Subscription;
 
   public currentQuestion: ILessonQuestion | null;
   public subject = new BehaviorSubject<ILessonEmit>({unit: ''});
@@ -42,9 +41,6 @@ export abstract class LessonService implements ILessonService {
     this.notify = this.subject.asObservable();
     this.currentQuestion = null;
     this.isPaused = false;
-    this.nextQuestionTrigger.pipe(takeUntil(this.stopNotifier$)).subscribe(async _ => {
-      await this.buildQuestion();
-    });
   }
 
   protected questionDisplayFormat(lesson) {
@@ -56,15 +52,22 @@ export abstract class LessonService implements ILessonService {
   }
 
   start() {
+    this.stop();
     this.remainItems = [...this.questionList];
     this.currentQuestion = null;
     this.isPaused = false;
+
+    this.nextQuestionSubscription = this.nextQuestionTrigger.subscribe(async _ => {
+      await this.buildQuestion();
+    });
 
     this.nextQuestion();
   }
 
   stop() {
-    this.stopNotifier$.next();
+    if (this.nextQuestionSubscription) {
+      this.nextQuestionSubscription.unsubscribe();
+    }
   }
 
   pause() {
