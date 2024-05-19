@@ -63,7 +63,7 @@ export class ClockLessonComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.totalScore = 2;
+    this.totalScore = 10;
     this.clockSimulationSubject.pipe(
       takeUntil(this.destroy$)
     ).subscribe(time => {

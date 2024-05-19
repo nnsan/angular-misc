@@ -15,12 +15,14 @@ interface ILessonService {
 export interface ILessonEmit {
   unit: string;
   format?: string;
+  image?: string;
 }
 
 export interface ILessonQuestion {
   answer: string;
   lessonUnit: string;
   question: string;
+  image?: string;
 }
 
 export abstract class LessonService implements ILessonService {
@@ -126,12 +128,12 @@ export abstract class LessonService implements ILessonService {
     this.subject.next({unit: END_SIGNAL});
   }
 
-  private async generateQuestion() {
+  public async generateQuestion() {
     this.currentQuestion = this.getLetter();
     this.subject.next({unit: this.currentQuestion.lessonUnit, format: this.questionDisplayFormat(this.currentQuestion.lessonUnit)});
   }
 
-  private getLetter() {
+  protected getLetter() {
     const position = getRandomInt(this.remainItems.length);
     const selectedItems = this.remainItems.splice(position, 1);
     return selectedItems[0];

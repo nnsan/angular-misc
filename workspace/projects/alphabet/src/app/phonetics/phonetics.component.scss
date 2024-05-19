@@ -31,13 +31,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
   p {
     font-size: 100px;
+    line-height: 150%;
   }
 }
 
 .need-to-improve-container {
+  min-height: 100px;
   margin: 20px auto;
 
   span {

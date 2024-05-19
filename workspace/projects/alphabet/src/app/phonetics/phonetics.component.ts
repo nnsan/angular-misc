@@ -31,6 +31,7 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
   public resetTimer = new Subject<boolean>();
 
   public message: string;
+  public imagePath: string;
   public score: number;
   public question: number;
   public totalScore: number;
@@ -48,6 +49,7 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
     this.question = 0;
     this.totalScore = 0;
     this.message = '';
+    this.imagePath = '';
     this.needMorePractice = new Set();
     this.status = LessonStatus.ReadyToStart;
   }
@@ -77,10 +79,12 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
       tap((value: ILessonEmit) => {
         if (value.unit === END_SIGNAL) {
           this.message = '';
+          this.imagePath = '';
           this.status = LessonStatus.EndLesson;
         } else {
           this.status = LessonStatus.InProgress;
           this.message = value.format || '';
+          this.imagePath = value.image ? `${this.lessonService.assetsDir}image/${value.image}` : '';
           this.needMorePractice.add(this.message);
           this.question += 1;
         }
