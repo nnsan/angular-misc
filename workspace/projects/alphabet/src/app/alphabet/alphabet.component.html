@@ -13,6 +13,10 @@
       } @else if (status == LESSON_STATUS.EndLesson) {
       <button mat-flat-button color="primary" (click)="OnContinue($event)">Bắt Đầu Học</button>
       }
+
+      @if (language == "english" && (status == LESSON_STATUS.ReadyToStart || status == LESSON_STATUS.EndLesson)) {
+      <button mat-flat-button color="primary" (click)="playAlphabetSong($event)">Alphabet Song</button>
+      }
     </div>
     <div class="clock">
       <app-countdown-timer [timeLimit]="thinkingTime" (timesUp)="onTimesUp()" [restartTimer]="resetTimer"></app-countdown-timer>
@@ -21,6 +25,18 @@
   <mat-divider></mat-divider>
   <div class="lesson-container">
     <p [innerHTML]="message | safeHtml"></p>
+    @if(playingSong) {
+    <div class="video-container">
+      <iframe
+        width="560"
+        height="315"
+        [src]="videoUrl"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+    }
   </div>
   <mat-divider></mat-divider>
 

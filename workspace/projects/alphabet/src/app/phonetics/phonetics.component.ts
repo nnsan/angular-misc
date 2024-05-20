@@ -65,6 +65,7 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
       this.lessonService.stop();
       this.totalScore = questions!.length;
       this.question = 0;
+      this.score = 0;
       this.message = '';
       this.imagePath = '';
       this.status = LessonStatus.ReadyToStart;

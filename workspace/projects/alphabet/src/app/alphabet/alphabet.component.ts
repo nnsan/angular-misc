@@ -8,10 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { ScoreTableComponent } from '../score-table/score-table.component';
 import { END_SIGNAL, LessonStatus } from '../services/utility'
-import { takeUntil, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { ILessonEmit } from '../services/lesson.service';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-vietnamese-letter',
@@ -39,11 +40,13 @@ export class AlphabetComponent implements OnInit, OnDestroy {
   public status: LessonStatus;
   public LESSON_STATUS = LessonStatus;
   public language: string;
+  public playingSong: boolean;
+  videoUrl: SafeResourceUrl;
 
   private destroy$: Subject<void> = new Subject<void>();
   private lessonNotifySubscription!: Subscription;
 
-  constructor(private lessonService: AlphabetService, private activatedRoute: ActivatedRoute) {
+  constructor(private lessonService: AlphabetService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer) {
     this.thinkingTime = 2;
     this.score = 0;
     this.question = 0;
@@ -52,11 +55,15 @@ export class AlphabetComponent implements OnInit, OnDestroy {
     this.needMorePractice = new Set();
     this.status = LessonStatus.ReadyToStart;
     this.language = '';
+    this.playingSong = false;
+    const url = 'https://www.youtube.com/embed/ezmsrB59mj8';
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
       this.language = params['language'];
+      this.playingSong = false;
 
       if (this.lessonNotifySubscription) {
         this.lessonNotifySubscription.unsubscribe();
@@ -75,6 +82,7 @@ export class AlphabetComponent implements OnInit, OnDestroy {
       this.status = LessonStatus.ReadyToStart;
       this.message = '';
       this.question = 0;
+      this.score = 0;
     });
   }
 
@@ -83,6 +91,7 @@ export class AlphabetComponent implements OnInit, OnDestroy {
   }
 
   onStart(event: MouseEvent) {
+    this.playingSong = false;
     event.stopPropagation();
     this.score = 0;
     this.question = 0;
@@ -116,7 +125,7 @@ export class AlphabetComponent implements OnInit, OnDestroy {
     this.needMorePractice.clear();
 
     this.lessonService.start();
-    console.log('OnContinue');
+    this.playingSong = false;
   }
 
   onPause(event: MouseEvent) {
@@ -129,6 +138,11 @@ export class AlphabetComponent implements OnInit, OnDestroy {
     this.status = LessonStatus.InProgress;
     this.lessonService.resume();
     event.stopPropagation();
+  }
+
+  playAlphabetSong(event: MouseEvent) {
+    event.stopPropagation();
+    this.playingSong = true;
   }
 
   getScore() {
