@@ -5,7 +5,7 @@ import { LessonService } from '../services/lesson.service';
   providedIn: 'root'
 })
 export class PhonticsService extends LessonService {
-  override assetsDir = './assets/phonetics/';
+  override assetsDir = './assets/phonetics';
 
   override questionDisplayFormat(lesson: string) {
     const [ uppercase, lowercase] = lesson.split('-');

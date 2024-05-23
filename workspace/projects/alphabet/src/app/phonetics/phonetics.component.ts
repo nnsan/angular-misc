@@ -93,7 +93,7 @@ export class PhoneticsComponent implements OnInit, OnDestroy {
         } else {
           this.status = LessonStatus.InProgress;
           this.message = value.format || '';
-          this.imagePath = value.image ? `${this.lessonService.assetsDir}image/${value.image}` : '';
+          this.imagePath = value.image ? `${this.lessonService.assetsDir}${value.image}` : '';
           this.needMorePractice.add(this.message);
           this.question += 1;
         }

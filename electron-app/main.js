@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const url = require('url');
+const fs = require('fs');
 
 let mainWindow;
 
@@ -8,18 +8,14 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
+        icon: path.join(__dirname, 'assets/icons/icon.png'),
         webPreferences: {
             nodeIntegration: true,
         },
     });
 
-    const startUrl = process.env.ELECTRON_START_URL || url.format({
-        pathname: path.join('..', '..', 'workspace', 'dist', 'alphabet', 'browser', 'index.html'),
-        protocol: 'file:',
-        slashes: true,
-    });
     // Load the Angular build file
-    mainWindow.loadFile(startUrl);
+    mainWindow.loadFile(path.join(__dirname, 'html', 'index.html'));
 
     mainWindow.on('closed', function () {
         mainWindow = null;

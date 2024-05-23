@@ -1,16 +1,41 @@
 {
-  "name": "electron-app",
+  "name": "alphabet",
   "version": "1.0.0",
+  "productName": "An Vy",
   "description": "",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "package": "electron-builder build --win"
+  },
+  "build": {
+    "appId": "com.anvy.alphabet",
+    "productName": "Alphabet",
+    "files": [
+      "main.js",
+      "package.json",
+      {
+        "from": "../workspace/dist/alphabet/browser",
+        "to": "html",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "icon": "assets/icons/icon.ico",
+      "target": "nsis"
+    },
+    "directories": {
+      "output": "dist"
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^30.0.6"
+    "electron": "^30.0.6",
+    "electron-builder": "^24.13.3"
   }
 }
