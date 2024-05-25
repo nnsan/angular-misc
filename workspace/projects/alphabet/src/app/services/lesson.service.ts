@@ -21,6 +21,7 @@ export interface ILessonQuestion {
   answer: string;
   lessonUnit: string;
   question: string;
+  answerPlayTime?: number;
   image?: string;
 }
 
@@ -110,7 +111,7 @@ export abstract class LessonService implements ILessonService {
 
       setTimeout(_ => {
         resolve();
-      }, 2_000);
+      }, item.answerPlayTime ? item.answerPlayTime * 1000: 2_000);
     });
   }
 
