@@ -5,7 +5,7 @@ export const PHONETICS_QUESTIONS: Map<string, ILessonQuestion[]> = new Map<strin
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'a-A', answer: '/sound/A.m4a', image: '/image/a.png', answerPlayTime: 4},
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'b-ba', answer: '/sound/B.m4a', image: '/image/b.png', answerPlayTime: 4},
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'c-cá', answer: '/sound/C.m4a', image: '/image/c.png', answerPlayTime: 4},
-    {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'o', answer: '/sound/O.m4a', image: '/image/o.png', answerPlayTime: 4},
+    {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'o-cô', answer: '/sound/O.m4a', image: '/image/o.png', answerPlayTime: 4},
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'ơ-bơ', answer: '/sound/ow.m4a', image: '/image/ow.png', answerPlayTime: 4},
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'ô-cô', answer: '/sound/oo.m4a', image: '/image/oo.png', answerPlayTime: 4},
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'v-vở', answer: '/sound/V.m4a', image: '/image/v.png', answerPlayTime: 4},
