@@ -1,7 +1,6 @@
 {
   "name": "alphabet",
   "version": "1.0.0",
-  "productName": "An Vy",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -11,7 +10,7 @@
   },
   "build": {
     "appId": "com.anvy.alphabet",
-    "productName": "Alphabet",
+    "productName": "An Vy",
     "files": [
       "main.js",
       "package.json",

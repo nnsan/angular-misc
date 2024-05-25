@@ -27,10 +27,10 @@ export const PHONETICS_QUESTIONS: Map<string, ILessonQuestion[]> = new Map<strin
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 's-sư tử', answer: '/sound/s.m4a', image: '/image/s.png', answerPlayTime: 7},
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'x-xe ngựa', answer: '/sound/x.m4a', image: '/image/x.png', answerPlayTime: 8},
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'p-pa nô', answer: '/sound/p.m4a', image: '/image/p.png', answerPlayTime: 8},
-    {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'q-que', answer: '/sound/q.m4a', image: '/image/q.png', answerPlayTime: 4},
-    {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'y-y sĩ', answer: '/sound/y.m4a', image: '/image/y.png', answerPlayTime: 5},
+    {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'q-quà', answer: '/sound/q.m4a', image: '/image/qu.png', answerPlayTime: 4},
+    {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'y-y sĩ', answer: '/sound/y.m4a', image: '/image/y.png', answerPlayTime: 6},
     {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'ă-ăn', answer: '/sound/aw.m4a', image: '/image/aw.png', answerPlayTime: 4},
-    {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'â-ân cần', answer: '/sound/aa.m4a', image: '/image/aa.png', answerPlayTime: 5},
+    {question: '/sound/what-is-phonetic.m4a', lessonUnit: 'â-ân cần', answer: '/sound/aa.m4a', image: '/image/aa.png', answerPlayTime: 7},
   ]],
   ['2', [
     { question: '/sound/what-is-phonetic.m4a', lessonUnit: 'ch-chợ', answer: '/sound/Ch.m4a', image: '/image/ch.png' },
