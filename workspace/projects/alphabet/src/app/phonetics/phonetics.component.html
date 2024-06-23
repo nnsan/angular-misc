@@ -22,7 +22,7 @@
   <div class="lesson-container">
     <p [innerHTML]="message | safeHtml"></p>
     @if (imagePath) {
-    <img [src]="imagePath">
+    <img class="description" [src]="imagePath">
     }
 
   </div>

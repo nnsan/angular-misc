@@ -17,6 +17,9 @@ function createWindow() {
     // Load the Angular build file
     mainWindow.loadFile(path.join(__dirname, 'html', 'index.html'));
 
+    mainWindow.setAutoHideMenuBar(true);
+    mainWindow.setMenuBarVisibility(false);
+
     mainWindow.on('closed', function () {
         mainWindow = null;
     });
