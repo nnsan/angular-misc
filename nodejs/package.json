@@ -1,0 +1,12 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "Sample for nodejs application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "split_ddl": "node ./split_ddl.js"
+  },
+  "author": "San Nguyen",
+  "license": "ISC"
+}
